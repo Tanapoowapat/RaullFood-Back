@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from model import models
 from datetime import timedelta
-from controller import user_controller, store_controller, location_controller, raider_controller
+from controller import order_controller, user_controller, store_controller, location_controller, raider_controller
 from schemas import schemas
 
 
@@ -162,6 +162,41 @@ async def create_raider(raider: schemas.RaiderCreate, db: Session = Depends(get_
 
 #delete raider
 @app.delete('/raiders/{raider_id}', response_model=schemas.Raider)
-def delete_raider(raider_id : int, db: Session = Depends(get_db)):
+async def delete_raider(raider_id : int, db: Session = Depends(get_db)):
     return raider_controller.delete_raider(db=db, raider_id=raider_id)
+
+"""
+ORDER ENDPOINT
+"""
+
+#get_orders
+@app.get('/orders/', response_model=List[schemas.Order])
+async def get_all_order(db: Session = Depends(get_db)):
+    return order_controller.get_all_orders(db=db)
+
+
+#create order
+@app.post('/orders/', response_model= schemas.Order)
+async def create_order(order : schemas.OrderCreate, db : Session = Depends(get_db)):
+    return order_controller.create_order(db = db, order = order)
+
+#UPDATE ORDER
+@app.put('/orders/', response_model= schemas.Order)
+async def update_order(order: schemas.OrderUpdate, db: Session = Depends(get_db)):
+    return order_controller.update_order(db=db, order=order)
+
+#GET ORDER by ID
+@app.get('/orders/{order_id}', response_model=schemas.Order)
+async def get_order(order_id : int, db : Session = Depends(get_db)):
+    return order_controller.get_order_by_id(db=db, order_id=order_id)
+
+#GET ORDER BY USER ID
+@app.get('/orders/by_user_id/{user_id}', response_model=schemas.Order)
+async def get_order_by_user_id(user_id: int, db : Session = Depends(get_db)):
+    return order_controller.get_order_by_user_id(user_id=user_id, db=db)
+
+#DELETE ORDER
+@app.delete('/orders/{order_id}', response_model=schemas.Order)
+async def delete_order(order_id : int, db : Session = Depends(get_db)):
+    return order_controller.delete_order(db=db, order_id= order_id)
 

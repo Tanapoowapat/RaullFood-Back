@@ -42,8 +42,8 @@ class Order(Base):
     __tablename__ = "order"
 
     order_id = Column(Integer, primary_key=True, index=True)
-    orderDetails = Column(String, unique=True, nullable=True)
-    store_id = Column(String, unique=True, nullable=True)
+    orderDetails = Column(String, nullable=True)
+    store_id = Column(String, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     raider_id = Column(Integer, ForeignKey("raider.raider_id"))
 

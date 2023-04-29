@@ -42,13 +42,21 @@ class OrderBase(BaseModel):
     raider_id: Optional[int] = None
 
 class OrderCreate(OrderBase):
-    pass
+    orderDetails: str
+    store_id : int
+    user_id : int
+
+class OrderUpdate(BaseModel):
+    order_id : int
+    orderDetails: str
+    raider_id : int
+
 
 
 class Order(OrderBase):
     order_id: int
-    user: User
-    raider: Raider
+    user_id: int
+    raider_id: Optional[int] = None
 
     class Config:
         orm_mode = True
